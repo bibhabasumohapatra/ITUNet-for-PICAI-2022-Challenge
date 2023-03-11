@@ -2,6 +2,7 @@ import os
 import argparse
 from trainer import SemanticSeg
 import random
+import pandas as pd
 
 from config import INIT_TRAINER, SETUP_TRAINER, VERSION, CURRENT_FOLD, PATH_LIST, FOLD_NUM, AP_LIST
 from utils import get_weight_path
@@ -40,6 +41,13 @@ def get_cross_validation_by_sample(path_list, fold_num, current_fold):
           "Val set length", len(validation_path))
     return train_path, validation_path
 
+def get_fold(fold_num):
+    df = pd.read_csv("/home/bibhabasum/ITUNET/ITUNet-for-PICAI-2022-Challenge/df_5280.csv")
+    train_path = df[df["fold"] != fold_num].image_id.values
+    validation_path = df[df["fold"] == fold_num].image_id.values
+    
+    return train_path, validation_path
+
 def get_parameter_number(net):
     total_num = sum(p.numel() for p in net.parameters())
     trainable_num = sum(p.numel() for p in net.parameters() if p.requires_grad)
@@ -68,7 +76,7 @@ if __name__ == "__main__":
             print("=== Training Fold ", current_fold, " ===")
             segnetwork = SemanticSeg(**INIT_TRAINER)
             print(get_parameter_number(segnetwork.net))
-            train_path, val_path = get_cross_validation_by_sample(path_list, FOLD_NUM, current_fold)
+            train_path, val_path = get_fold(current_fold)
             train_AP, val_AP = get_cross_validation_by_sample(AP_LIST, FOLD_NUM, current_fold)
             SETUP_TRAINER['train_path'] = train_path
             SETUP_TRAINER['val_path'] = val_path
