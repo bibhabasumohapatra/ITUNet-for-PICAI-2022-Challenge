@@ -148,8 +148,8 @@ class DataGenerator(Dataset):
     # ct = hdf5_reader(self.path_list[index],'ct')
     # seg = hdf5_reader(self.path_list[index],'seg') 
     
-    ct = np.load(f"/mnt/prj001/Bibhabasu_Mohapatra/slicesv4/{self.path_list[index]}").astype(np.float32)
-    seg = np.load(f"/mnt/prj001/Bibhabasu_Mohapatra/slices_masksv4/{self.path_list[index]}").astype(np.float32)
+    ct = np.load(f"/mnt/prj001/Bibhabasu_Mohapatra/slicesv4/{self.path_list[index]}.npy").astype(np.float32)
+    seg = np.load(f"/mnt/prj001/Bibhabasu_Mohapatra/slices_masksv4/{self.path_list[index]}.npy").astype(np.float32)
 
     sample = {'ct': ct, 'seg':seg}
     # Transform
