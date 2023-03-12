@@ -42,7 +42,7 @@ def get_cross_validation_by_sample(path_list, fold_num, current_fold):
     return train_path, validation_path
 
 def get_fold(fold_num):
-    df = pd.read_csv("/home/bibhabasum/ITUNET/ITUNet-for-PICAI-2022-Challenge/df_5280.csv")
+    df = pd.read_csv("/home/bibhabasum/ITUNet-for-PICAI-2022-Challenge/segmentation/df_5280.csv")
     train_path = df[df["fold"] != fold_num].image_id.values
     validation_path = df[df["fold"] == fold_num].image_id.values
     
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # Training
     ###############################################
     if args.mode == 'train-cross':
-        for current_fold in range(1, FOLD_NUM + 1):
+        for current_fold in range(FOLD_NUM):
             print("=== Training Fold ", current_fold, " ===")
             segnetwork = SemanticSeg(**INIT_TRAINER)
             print(get_parameter_number(segnetwork.net))
